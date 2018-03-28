@@ -222,5 +222,13 @@ output = open(outputPath,"w")
 ComputeFreqSuffixPairs()
 FormClasses(output) 
 
+freq_suffix = []
 for key in suffixPairDict:
-    print (key, suffixPairDict[key])
+    if (suffixPairDict[key] > 10):
+        freq_suffix += key.split(':')
+        # print (key, suffixPairDict[key])
+
+freq_suffix = sorted(list(set(freq_suffix)))
+
+for s in freq_suffix:
+    print (s)
