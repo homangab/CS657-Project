@@ -3,13 +3,13 @@ import os
 
 
 lamdaVals = [5,6,7]  #average word length
-lamda = 5
+lamda = 6
 
 alphavalues = [2,4,6] #minimum occurence of a pair of suffixes to consider them FREQUENT
-alpha = 4
+alpha = 7
 
 gammaValues = [0.7,0.8,0.9]
-gamma = 0.7
+gamma = 0.9
 
 lexiconsPath = "lexicons.txt"
 outputPath = ""
@@ -37,7 +37,7 @@ def KeyCreate(boolean, a, b):
 
 
 def ComputeFreqSuffixPairs():
-    print("ComputeFreqSuffixPairs")
+    # print("ComputeFreqSuffixPairs")
     f = open(lexiconsPath,"r")
     lexemes = f.read().split("\n")
     arr = []
@@ -70,7 +70,7 @@ def ComputeFreqSuffixPairs():
 
 
 def FormClasses(output):
-    print("FormClasses")
+    # print("FormClasses")
     f = open(lexiconsPath,"r")
     lexemes = f.read().split("\n")
     arr = []
@@ -111,7 +111,7 @@ def GraphandCluster(nodePairDict,output):
     adjacencyDict = dict()
     for key in nodePairDict.keys():
         keyparts = key.split(":")
-        print(key)
+        # print(key)
         for i in range(2):
             if (keyparts[i] in adjacencyDict.keys()):
                 temp =  adjacencyDict[keyparts[i]]
@@ -141,7 +141,7 @@ def GraphandCluster(nodePairDict,output):
         adjacencyDict[key] = sortedDestNodes
 
     if(len(adjacencyDict.keys()) != 0):
-        print("<<<---------------------------------CLUSTERING GRAPH------------------------------------>")
+        # print("<<<---------------------------------CLUSTERING GRAPH------------------------------------>")
     while(len(adjacencyDict.keys()) != 0):
         #NODE WITH LONGEST LIST
         longestlist = []
@@ -179,8 +179,8 @@ def GraphandCluster(nodePairDict,output):
                     pass
                 adjacencyDict[nextd] = nextlist
         
-        print("===== new cluster =====")
-        print("root: " + newCluster[0])
+        # print("===== new cluster =====")
+        # print("root: " + newCluster[0])
 
         if(len(newCluster) > 1):#only write the non-trivial clusters to the file
             output.write(newCluster[0] + "\n")
@@ -200,7 +200,7 @@ def GraphandCluster(nodePairDict,output):
 
 def createKey(left, right):
     res = left > right
-    return KeyCreate(res,left, right)
+    return KeyCreate(res,left,right)
 
 def ComputeCohesion(leftList, rightList):
     intersectionSize = 0;
@@ -211,13 +211,16 @@ def ComputeCohesion(leftList, rightList):
         return 0
     return (1+intersectionSize)/len(rightList)
 
-for i in range(len(lamdaVals)):
-    lamda = lamdaVals[i]
-    for j in range(len(alphavalues)):
-        alpha = alphavalues[j];
-        for k in range(len(gammaValues)):
-            gamma = gammaValues[k]
-            outputPath= "stems/stems_lambda="+str(lamda)+"_alpha="+str(alpha)+"_gamma="+str(gamma)+".txt"
-            output = open(outputPath,"w")
-            ComputeFreqSuffixPairs()
-            FormClasses(output) 
+# for i in range(len(lamdaVals)):
+#     lamda = lamdaVals[i]
+#     for j in range(len(alphavalues)):
+#         alpha = alphavalues[j];
+#         for k in range(len(gammaValues)):
+#             gamma = gammaValues[k]
+outputPath= "stems/stems_lambda="+str(lamda)+"_alpha="+str(alpha)+"_gamma="+str(gamma)+".txt"
+output = open(outputPath,"w")
+ComputeFreqSuffixPairs()
+FormClasses(output) 
+
+for key in suffixPairDict:
+    print (key, suffixPairDict[key])
