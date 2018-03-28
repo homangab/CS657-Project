@@ -140,7 +140,7 @@ def GraphandCluster(nodePairDict,output):
             sortedDestNodes.append(destNodes[i])
         adjacencyDict[key] = sortedDestNodes
 
-    if(len(adjacencyDict.keys()) != 0):
+    # if(len(adjacencyDict.keys()) != 0):
         # print("<<<---------------------------------CLUSTERING GRAPH------------------------------------>")
     while(len(adjacencyDict.keys()) != 0):
         #NODE WITH LONGEST LIST
