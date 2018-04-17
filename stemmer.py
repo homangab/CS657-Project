@@ -31,7 +31,7 @@ gras = open("gras_suffs.txt","r").read().split("\n")
 gras_suff_tree = trie.CharTrie()
 
 for i in gras:
-    gras_tree[i] = True
+    gras_suff_tree[i[::-1]] = True
 
 def stem(inp):
     for word in inp:
@@ -77,6 +77,6 @@ def stem(inp):
         except:
             pass
         print(unstemmed + " ----> " + word)
-
+#        print(word)
 
 stem(inp)
