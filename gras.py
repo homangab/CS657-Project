@@ -17,6 +17,24 @@ outputPath = ""
 suffixPairDict = dict()
 nodePairDict = dict()
 
+f = open(lexiconsPath,"r")
+original_lexemes = f.read().split("\n")
+lexemes = []
+def chopKnownSuffixes(freq_suffix=[],suffListFlag=False):
+    lexemes = []
+    if(suffListFlag):
+        for lexeme in original_lexemes:
+            if(suffListFlag == True):
+                for suffix in freq_suffix:
+                    k = len(suffix)
+                    if(lexeme[-k:] == suffix):
+                        lexeme = lexeme[:-k]
+                        lexemes.append(lexeme)
+                        break
+            lexemes.append(lexeme)
+    else:
+        lexemes = original_lexemes
+
 #it makes a pass over the lexicon and computes the frequency of the different suffix pairs.
 def LongestCommonSubstr(a,b):
     common = a[0:lamda]
@@ -37,7 +55,7 @@ def KeyCreate(boolean, a, b):
 
 
 def ComputeFreqSuffixPairs():
-    # print("ComputeFreqSuffixPairs")
+    print("ComputeFreqSuffixPairs")
     f = open(lexiconsPath,"r")
     lexemes = f.read().split("\n")
     arr = []
@@ -70,7 +88,7 @@ def ComputeFreqSuffixPairs():
 
 
 def FormClasses(output):
-    # print("FormClasses")
+    print("FormClasses")
     f = open(lexiconsPath,"r")
     lexemes = f.read().split("\n")
     arr = []
@@ -107,7 +125,7 @@ def FormClasses(output):
                     arr = []
 
 def GraphandCluster(nodePairDict,output):
- #   print("GraphandCluster")
+    print("GraphandCluster")
     adjacencyDict = dict()
     for key in nodePairDict.keys():
         keyparts = key.split(":")
@@ -140,8 +158,8 @@ def GraphandCluster(nodePairDict,output):
             sortedDestNodes.append(destNodes[i])
         adjacencyDict[key] = sortedDestNodes
 
-    # if(len(adjacencyDict.keys()) != 0):
-        # print("<<<---------------------------------CLUSTERING GRAPH------------------------------------>")
+    if(len(adjacencyDict.keys()) != 0):
+        print("<<<---------------------------------CLUSTERING GRAPH------------------------------------>")
     while(len(adjacencyDict.keys()) != 0):
         #NODE WITH LONGEST LIST
         longestlist = []
@@ -179,8 +197,8 @@ def GraphandCluster(nodePairDict,output):
                     pass
                 adjacencyDict[nextd] = nextlist
         
-        # print("===== new cluster =====")
-        # print("root: " + newCluster[0])
+        print("===== new cluster =====")
+        print("root: " + newCluster[0])
 
         if(len(newCluster) > 1):#only write the non-trivial clusters to the file
             output.write(newCluster[0] + "\n")
@@ -219,16 +237,25 @@ def ComputeCohesion(leftList, rightList):
 #             gamma = gammaValues[k]
 outputPath= "stems/stems_lambda="+str(lamda)+"_alpha="+str(alpha)+"_gamma="+str(gamma)+".txt"
 output = open(outputPath,"w")
+#chopKnownSuffixes()
 ComputeFreqSuffixPairs()
 FormClasses(output) 
-
+output.close()
 freq_suffix = []
 for key in suffixPairDict:
-    if (suffixPairDict[key] > 10):
+    if (suffixPairDict[key] > 50):
         freq_suffix += key.split(':')
         # print (key, suffixPairDict[key])
 
 freq_suffix = sorted(list(set(freq_suffix)))
-
-for s in freq_suffix:
-    print (s)
+open("gras_suffs.txt","w").write("\n".join(freq_suffix))
+suffListFlag = True
+for i in range(0):
+ #   chopKnownSuffixes(freq_suffix,suffListFlag)
+    output = open(outputPath,"w")
+    ComputeFreqSuffixPairs()
+    FormClasses(output)
+    for key in suffixPairDict:
+        if (suffixPairDict[key] > 10):
+            freq_suffix += key.split(':')
+    freq_suffix = sorted(list(set(freq_suffix)))
