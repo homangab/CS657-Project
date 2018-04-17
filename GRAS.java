@@ -31,16 +31,16 @@ import java.util.Scanner;
 public class GRAS {
 
 
-	private static int[] lambdaValues = {5,6,7};
+	private static int[] lambdaValues = {6};
 	private static int lambda; //the minimum length of "word - suffix"; 
 	//in the paper it says that the average word length of the language is a good guess;
 	// the average length of Sorani words  is 5.6; for Kurmanji it is 4.8.
 
-	private static int[] alphaValues = {2,4,6};
+	private static int[] alphaValues = {7};
 	private static int alpha; // the minimum occurrence of a pair of suffixes to consider them  'frequent'; 
 	// in the paper it proposes to use  4.
 
-	private static float[] gammaValues = {0.7F,0.8F,0.9F};
+	private static float[] gammaValues = {0.9F};
 	private static float gamma;  // this is the minimum value of a cluster's cohesion (which measure how well-connected the cluster is);
 	// in the paper it is said that it should be between 0.5 and 1.0;
 	// the proposed value is 0.8.
@@ -65,8 +65,8 @@ public class GRAS {
 				for(int k = 0; k < gammaValues.length; k++){
 					gamma = gammaValues[k];
 					
-					outputFilePath = "stems/stems_lambda="+lambda+"_alpha="+alpha+"_gamma="+gamma+".txt";
-
+					//outputFilePath = "stems/stems_lambda="+lambda+"_alpha="+alpha+"_gamma="+gamma+".txt";
+					outputFilePath = "gras_roots.txt";
 					computeFrequentSuffixPairs();
 					
 					//System.out.println(suffixPairMap.size());

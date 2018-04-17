@@ -201,10 +201,10 @@ def GraphandCluster(nodePairDict,output):
         print("root: " + newCluster[0])
 
         if(len(newCluster) > 1):#only write the non-trivial clusters to the file
-            output.write(newCluster[0] + "\n")
-            for key in newCluster:
-                output.write(key+",")
-            output.write("\n------------------------------------------------------------\n")
+            output.write(min(newCluster, key=len) + "\n")
+            #for key in newCluster:
+            #    output.write(key+",")
+            #output.write("\n------------------------------------------------------------\n")
 
         for key in newCluster:
             adjacencyDict.pop(key)
@@ -235,7 +235,8 @@ def ComputeCohesion(leftList, rightList):
 #         alpha = alphavalues[j];
 #         for k in range(len(gammaValues)):
 #             gamma = gammaValues[k]
-outputPath= "stems/stems_lambda="+str(lamda)+"_alpha="+str(alpha)+"_gamma="+str(gamma)+".txt"
+#outputPath= "stems/stems_lambda="+str(lamda)+"_alpha="+str(alpha)+"_gamma="+str(gamma)+".txt"
+outputPath = "gras_roots.txt"
 output = open(outputPath,"w")
 #chopKnownSuffixes()
 ComputeFreqSuffixPairs()
@@ -243,7 +244,7 @@ FormClasses(output)
 output.close()
 freq_suffix = []
 for key in suffixPairDict:
-    if (suffixPairDict[key] > 50):
+    if (suffixPairDict[key] > 100):
         freq_suffix += key.split(':')
         # print (key, suffixPairDict[key])
 
